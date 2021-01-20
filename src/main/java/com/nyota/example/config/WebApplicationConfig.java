@@ -14,6 +14,9 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+
 
 @EnableWebMvc
 @Configuration
@@ -28,6 +31,28 @@ public class WebApplicationConfig {
 		bean.setSuffix(".jsp");
 		return bean;
 	}
+	
+	
+	   @Bean
+	   public SpringResourceTemplateResolver templateResolver() {
+	      SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+	      //templateResolver.setApplicationContext(applicationContext);
+	      templateResolver.setPrefix("/WEB-INF/views/");
+	      templateResolver.setSuffix(".html");
+	      return templateResolver;
+	   }
+
+	   /*
+	    * STEP 2 - Create SpringTemplateEngine
+	    * */
+	   @Bean
+	   public SpringTemplateEngine templateEngine() {
+	      SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+	      templateEngine.setTemplateResolver(templateResolver());
+	      templateEngine.setEnableSpringELCompiler(true);
+	      return templateEngine;
+	   }
+	
 
 	// @Override
 	public void addInterceptors(InterceptorRegistry registry) {
